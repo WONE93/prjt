@@ -38,7 +38,7 @@ public class MemberList extends HttpServlet {
 		//3. 결과출력 OR 결과저장해서 view 포워드
 		request.setAttribute("list", list);
 		
-		request.getRequestDispatcher("/member/memberList.jsp");
+		request.getRequestDispatcher("/member/memberList.jsp").forward(request, response);
 		
 		
 	}

@@ -8,6 +8,8 @@ import java.util.List;
 
 import common.ConnectionManager;
 
+
+
 public class JobDAO {
 
 	Connection conn = null;

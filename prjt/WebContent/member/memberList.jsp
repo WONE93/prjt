@@ -6,7 +6,7 @@
 <html>
 <head>
 <title>회원 목록</title>
-<%@include file="/common/header.jsp"%>
+<jsp:include page="/common/header.jsp"/>
 
 	<!-- Nevigation bar -->
 	<%@include file="/common/menu.jsp"%>

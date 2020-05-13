@@ -55,16 +55,12 @@ public class BoardInsert extends HttpServlet {
 		board.setTitle(title);
 		board.setContents(contents);
 		board.setId(id);
+		
+		boardDAO.boardInsert(board);
+		
+		
+		response.sendRedirect(request.getContextPath()+ "/BoardList.do");
 
-
-		int r = boardDAO.boardInsert(board);
-
-		// 3.결과출력
-		PrintWriter out = response.getWriter();
-		out.print("<br>아디 = " + id); // System.out.
-		out.append("<br>타이틀 = " + title);
-		out.append("<br>내용 = " + contents);
-		out.print("<br> 처리된 건수= " + r);
 	}
 
 }

@@ -4,11 +4,11 @@
 <html>
 <title></title>
 
-<%@include file="/common/header.jsp"%>
+<jsp:include page="/common/header.jsp"/>
 
 <h3>로그인</h3>
 <div>${errorMsg}</div>
-<form action="MemberLogin.do" method="post">
+<form action="/prjt/MemberLogin.do" method="post">
 	<input name="id" placeholder="id" value="${param.id}"><br> <input name="pwd"
 		placeholder="pwd"><br>
 	<button>로그인</button>

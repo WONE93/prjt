@@ -4,11 +4,11 @@
 <html>
 <head>
 <title>Insert title here</title>
-<%@include file="/common/header.jsp"%>
+<jsp:include page="/common/header.jsp"/>
 
 
 <h3>회원 정보 수정</h3>
-<form action="/edu/MemberUpdate.do" method="post">
+<form action="/prjt/MemberUpdate.do" method="post">
 	ID : <input type="text" name="id" readonly="readonly"
 		value="${member.id}" /><br /> 비밀번호 : <input type="password"
 		name="pwd" id="pwd" value="${member.pwd}" /><br /> 이름: <input

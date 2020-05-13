@@ -22,12 +22,14 @@ public class BoardList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	
 			throws ServletException, IOException {
 		// 1.파라미터
 		// 로그인 안되어있으면 로그인페이지로
 		String id = (String) request.getSession().getAttribute("loginId");
 		if (id == null) {
-			response.sendRedirect(request.getContextPath() + "/member/memberLogin.jsp");
+			request.getRequestDispatcher("/member/memberLogin.jsp").forward(request, response);
+//			response.sendRedirect(request.getContextPath() + "/member/memberLogin.jsp"); 
 			return;
 		}
 
@@ -39,8 +41,7 @@ public class BoardList extends HttpServlet {
 		request.setAttribute("list", list);
 		request.getRequestDispatcher("/board/boardList.jsp").forward(request, response);
 
-		
-		
+			
 	}
 
 

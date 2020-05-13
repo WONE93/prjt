@@ -122,14 +122,14 @@ public class BoardDAO {
 			conn = ConnectionManager.getConnnect();
 
 			// 2. sql구문 준비
-			String sql = "update board set title=?, contents=? " + " where id=?"; // id는 pk라서 수정불가
+			String sql = "update board set title=?, contents=? " + " where seq=?";
 
 			psmt = conn.prepareStatement(sql);
 
 			// 3. 실행
-			psmt.setString(3, board.getId());
 			psmt.setString(1, board.getTitle());
 			psmt.setString(2, board.getContents());
+			psmt.setString(3, board.getSeq());
 
 			r = psmt.executeUpdate();
 
@@ -147,8 +147,34 @@ public class BoardDAO {
 	}
 	
 	//삭제
-//	public boardDelete(BoardVO board) {
-//		
-//	}
+	public void boardDelete (BoardVO board) {
+		Connection conn = null;
+		PreparedStatement psmt = null;
+
+		try {
+			// 1. DB 연결
+			conn = ConnectionManager.getConnnect();
+
+			// 2. sql구문 준비
+			String sql = "delete from board where seq= ?";
+
+			psmt = conn.prepareStatement(sql);
+
+			// 3. 실행
+			psmt.setString(1, board.getSeq());
+
+			psmt.execute();
+
+			// 4. 결과처리
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// 5. 연결해제
+			ConnectionManager.close(conn);
+		}
+
+	}
 
 }

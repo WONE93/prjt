@@ -1,4 +1,4 @@
-package member.controller;
+package board.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,14 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import member.model.MemberDAO;
-import member.model.MemberVO;
+import board.model.BoardDAO;
+import board.model.BoardVO;
+
 
 /**
  * Servlet implementation class MemberUpdateForm
  */
-@WebServlet("/MemberUpdate.do")
-public class MemberUpdate extends HttpServlet {
+@WebServlet("/BoardUpdate.do")
+public class BoardUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	
@@ -33,42 +34,25 @@ public class MemberUpdate extends HttpServlet {
 				String pwd = request.getParameter("pwd");
 				
 				//자기소개, 이름, 종교, 취미
-				String name = request.getParameter("name");
-//				String hobby = request.getParameter("hobby");
-				String religion = request.getParameter("religion");
-				String introduction = request.getParameter("introduction");
-				String gender = request.getParameter("gender");
-			
-				String[] hobby = request.getParameterValues("hobby");
-				// 값이 체크박스일 경우에만, 선택지가 여러개인 경우에만 파라미터밸류스로 
-				String hobbs = "";
-				if(hobby != null)
-					for(String temp: hobby) {
-						hobbs += temp + ",";
-					}
+				String title = request.getParameter("title");
+				String contents = request.getParameter("contents");
+				String seq = request.getParameter("seq");
+				
+
 				
 				//2.서비스 로직 처리(DAO)
-				MemberDAO memberDAO = new MemberDAO();
-				MemberVO member = new MemberVO();
+				BoardDAO boardDAO = new BoardDAO();
+				BoardVO board = new BoardVO();
 				
-				member.setId(id);
-				member.setPwd(pwd);
-				member.setName(name);
-				member.setHobby(hobbs);
-				member.setGender(gender);
-				member.setReligion(religion);
-				member.setIntroduction(introduction);			
-//				int r = memberDAO.memberUpdate(member);
+				board.setTitle(title);
+				board.setContents(contents);
+				board.setSeq(seq);
+	
+				boardDAO.boardUpdate(board);
 				
-				//3.결과출력
-//				PrintWriter out = response.getWriter();
-//				out.print("<br>아디 = " + id); // System.out.
-//				out.append("<br>pwd = " + pwd);
-//				out.append("<br>취미 = " + hobbs);
-//				out.print("<br> 처리된 건수= " + r);
-				
-				response.sendRedirect(request.getContextPath()+ "/MemberUpdate.do");
-		
+				response.sendRedirect(request.getContextPath()+ "/BoardList.do");
+			
+
 	}
 
 
@@ -86,14 +70,14 @@ public class MemberUpdate extends HttpServlet {
 			
 		}	
 		//서비스 로직 처리
-		MemberDAO dao = new MemberDAO();
-		MemberVO vo = dao.getMember(id); //한건조회 vo에 id값을 담을것임
+		BoardDAO dao = new BoardDAO();
+		BoardVO vo = dao.getBoard(id); //한건조회 vo에 id값을 담을것임
  
 		//결과저장
-		request.setAttribute("member", vo);  // 정말 중요한 부분!! 
+		request.setAttribute("board", vo);  // 정말 중요한 부분!! 
 		
 		//뷰페이지로 이동
-		request.getRequestDispatcher("/member/memberUpdate.jsp")
+		request.getRequestDispatcher("/board/boardUpdate.jsp")
 			   .forward(request, response); //리퀘스트 객체를 넘겨줘야하면 forward임 
 	}
 

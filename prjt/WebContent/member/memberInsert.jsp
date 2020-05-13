@@ -4,7 +4,7 @@
 <html>
 <head>
 <title>Insert title here</title>
-<%@include file="/common/header.jsp"%>
+<jsp:include page="/common/header.jsp"/>
 
 
 <h3>회원정보</h3>
