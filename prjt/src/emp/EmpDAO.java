@@ -174,13 +174,32 @@ public class EmpDAO {
 	}
 	
 	//전체조회
-	public List<EmpVO> selectAll() {
+	public List<EmpVO> selectAll(int start, int end, String department_id, String first_name) {
 		List<EmpVO> datas = new ArrayList<EmpVO>();
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "select * from hr.employees order by employee_id";
+			String strWhere = " where 1 = 1 "; 
+			if(department_id != null && ! department_id.isEmpty() ) {
+				strWhere += " and department_id = ? ";
+			}
+			if(first_name != null && ! first_name.isEmpty()) {
+				strWhere += " and first_name like '%' || ? || '%' ";
+			}
+			String sql = "select B.* from ( select A.* ,rownum RN from ( "
+					+ " select * from hr.employees " + strWhere + " order by employee_id "
+					+ " ) A ) B where RN between ? and ? ";											
 			pstmt = conn.prepareStatement(sql);
+			int post = 1;
+			if(department_id != null && ! department_id.isEmpty() ) {
+				pstmt.setString(post++, department_id);
+			}
+			if(first_name != null && ! first_name.isEmpty() ) {
+				pstmt.setString(post++, first_name);
+			}
+			pstmt.setInt(post++, start);
+			pstmt.setInt(post++, end); //1페이지 2페이지 나누기 처리		
 			rs = pstmt.executeQuery();
+			
 			while(rs.next()) {
 				EmpVO emp = new EmpVO();
 				emp.setCommission_pct(rs.getString("commission_pct"));
@@ -202,6 +221,43 @@ public class EmpDAO {
 			ConnectionManager.close(conn);
 		}
 		return datas;
+	}
+	
+	//페이징전체건수
+	public int getCount(String department_id, String first_name) { //단건조회 참고해서  조회된 결과가 한건이라면 vo에 담으로면되고 여러건이라면 int에 담기
+		int cnt = 0;
+		try {
+			conn = ConnectionManager.getConnnect();
+			
+			String strWhere = " where 1 = 1 "; 
+			if(department_id != null && ! department_id.isEmpty() ) {
+				strWhere += " and department_id = ? ";
+			}
+			if(first_name != null && ! first_name.isEmpty()) {
+				strWhere += " and first_name like '%' || ? || '%' ";
+			}
+			
+			String sql = "select count(*) from hr.employees" + strWhere;
+			pstmt = conn.prepareStatement(sql);
+			
+			int post = 1;
+			if(department_id != null && ! department_id.isEmpty() ) {
+				pstmt.setString(post++, department_id);
+			}
+			if(first_name != null && ! first_name.isEmpty() ) {
+				pstmt.setString(post++, first_name);
+			}
+			
+			rs = pstmt.executeQuery();
+		if(rs.next()) {
+			cnt = rs.getInt(1);  // 쿼리에 count(*) as cnt 해서 ()안에 cnt 담아줘도 되고 순서값써줘도됨 
+		}	
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close(rs, pstmt, conn);
+		}	
+		return cnt;
 	}
 }
 

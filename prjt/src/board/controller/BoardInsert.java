@@ -30,9 +30,6 @@ public class BoardInsert extends HttpServlet {
 		
 	}
 
-
-
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 포스트 방식일때는 밑의 방식으로 해야 한글 안깨짐

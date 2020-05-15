@@ -16,11 +16,6 @@ import emp.EmpVO;
 import emp.JobDAO;
 import emp.JobVO;
 
-
-
-
-
-
 /**
  * Servlet implementation class EmpInsert
  */
@@ -38,7 +33,7 @@ public class EmpInsert extends HttpServlet {
 		List<DeptVO> deptList = DeptDAO.getInstance().selectAll();
 		request.setAttribute("deptList", deptList);
 		// manager(emp)
-		List<EmpVO> empList = EmpDAO.getInstance().selectAll();
+		List<EmpVO> empList = EmpDAO.getInstance().selectAll(1,100,null,null);
 		request.setAttribute("empList", empList);
 
 		request.getRequestDispatcher("emp/empInsert.jsp").forward(request, response);
